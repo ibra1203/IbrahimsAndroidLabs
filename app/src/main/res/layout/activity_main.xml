@@ -21,10 +21,39 @@
         android:layout_marginBottom="50px"
         android:text="@string/button_message" />
 
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkbox_message" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switch1_message" />
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/radio_message" />
+
     <EditText
         android:id="@+id/myedittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/editmessage"
-        android:hint="@string/hinttext" />
+        android:hint="@string/hinttext"
+        android:text="@string/editmessage" />
+
+    <ImageView
+        android:layout_width="600px"
+        android:layout_height="250px"
+        android:src="@drawable/logo_algonquin" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/app_icon"
+        android:id="@+id/myimagebutton"  />
 </LinearLayout>

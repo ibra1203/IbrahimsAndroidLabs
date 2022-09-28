@@ -3,4 +3,9 @@
     <string name="app_name">Ibrahim\'s Android Labs</string>
     <string name="hello_message">Bonjour tout le monde!</string>
     <string name="button_message">Je suis un bouton</string>
+    <string name="editmessage">Je suis un texte d’édition</string>
+    <string name="checkbox_message">Buvez-vous du café?</string>
+    <string name="switch1_message">Buvez-vous du café?</string>
+    <string name="radio_message">Buvez-vous du café?</string>
+    <string name="hinttext">écrivez quelque chose ici</string>
 </resources>
