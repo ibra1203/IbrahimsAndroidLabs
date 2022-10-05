@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IbrahimsAndroidLabs"
         tools:targetApi="31"
-        android:banner="TODO">
+        android:banner="@drawable/tv_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true">
