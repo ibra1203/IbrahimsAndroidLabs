@@ -12,6 +12,8 @@ public class ChatMessage {
 //    String timeSent;
 //    boolean isSentButton;
 
+    @PrimaryKey
+    public int id;
 
     @ColumnInfo(name="message")
     protected String message;
@@ -23,15 +25,17 @@ public class ChatMessage {
     protected boolean isSentButton;
 
 //    public ChatMessage(){}
-    public ChatMessage(String message, String timeSent, boolean isSentButton) {
+    public ChatMessage(int id, String message, String timeSent, boolean isSentButton) {
 
+        this.id = id;
         this.message = message;
         this.timeSent = timeSent;
         this.isSentButton = isSentButton;
     }
 
-    @PrimaryKey
-    public int id;
+    public int getId() {
+        return id;
+    }
 
     public String getMessage() {
         return message;
