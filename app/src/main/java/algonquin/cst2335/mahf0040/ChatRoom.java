@@ -2,6 +2,8 @@ package algonquin.cst2335.mahf0040;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +73,7 @@ public class ChatRoom extends AppCompatActivity {
             {
 
                // List<ChatMessage> allMessages = mDAO.getAllMessages();
-               messages.addAll( mDAO.getAllMessages() ); //Once you get the data from database
+                messages.addAll( mDAO.getAllMessages() ); //Once you get the data from database
                 binding.recycleView.setAdapter( myAdapter );
             });
         }
@@ -181,10 +183,24 @@ public class ChatRoom extends AppCompatActivity {
 
         });
 
+        chatModel.selectedMessage.observe(this, (newMessageValue) -> {
+
+            MessageDetailsFragment  chatFragment = new MessageDetailsFragment( newMessageValue );
+
+            FragmentManager fMgr = getSupportFragmentManager();
+            FragmentTransaction tx = fMgr.beginTransaction();
+            tx.add(R.id.fragmentLocation,chatFragment);
+            tx.addToBackStack("Back to previous activity");
+            tx.commit();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentLocation, chatFragment)
+                    .commit();
+        });
 
 
     }
-
     public class MyRowHolder extends RecyclerView.ViewHolder {
 
         TextView messageText;
@@ -193,41 +209,47 @@ public class ChatRoom extends AppCompatActivity {
 
         public MyRowHolder(@NonNull View itemView, ArrayList<ChatMessage> messages, ChatMessageDAO mDAO, RecyclerView.Adapter myAdapter) {
             super(itemView);
-
-            itemView.setOnClickListener(clk ->{
-
-                int position = getAbsoluteAdapterPosition();
-
-                RecyclerView.ViewHolder newRow = ChatRoom.this.myAdapter.createViewHolder(null, ChatRoom.this.myAdapter.getItemViewType(position));
-
-                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
-
-                builder.setMessage("Do you want to delete the message: " + messageText.getText())
-                        .setTitle("Question: ")
-                        .setNegativeButton("No", (dialog, cl) -> {})
-                        .setPositiveButton("Yes", (dialog, cl) -> {
-
-                            ChatMessage removedMessage = ChatRoom.this.messages.get(position);
-                            ChatRoom.this.messages.remove(position);
-                            ChatRoom.this.myAdapter.notifyItemRemoved(position);
-
-                            Snackbar.make(messageText,"You deleted message #"+ position, Snackbar.LENGTH_LONG)
-                                    .setAction("Undo", clk1 -> {
-
-                                        ChatRoom.this.messages.add(position, removedMessage);
-                                        ChatRoom.this.myAdapter.notifyItemInserted(position);
-                                    })
-                                    .show();
-                        })
-                        .create().show();
-
-
-            });
-
             messageText = itemView.findViewById(R.id.messageText);
             timeText = itemView.findViewById(R.id.timeText);
 
+            itemView.setOnClickListener(clk -> {
 
+                int position = getAbsoluteAdapterPosition();
+                ChatMessage selected = messages.get(position);
+
+                chatModel.selectedMessage.postValue(selected);
+
+
+                //   RecyclerView.ViewHolder newRow = ChatRoom.this.myAdapter.createViewHolder(null, ChatRoom.this.myAdapter.getItemViewType(position));
+
+//                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
+//
+//                builder.setMessage("Do you want to delete the message: " + messageText.getText())
+//                        .setTitle("Question: ")
+//                        .setNegativeButton("No", (dialog, cl) -> {})
+//                        .setPositiveButton("Yes", (dialog, cl) -> {
+//
+//                            ChatMessage removedMessage = ChatRoom.this.messages.get(position);
+//                            ChatRoom.this.messages.remove(position);
+//                            ChatRoom.this.myAdapter.notifyItemRemoved(position);
+//
+//                            Snackbar.make(messageText,"You deleted message #"+ position, Snackbar.LENGTH_LONG)
+//                                    .setAction("Undo", clk1 -> {
+//
+//                                        ChatRoom.this.messages.add(position, removedMessage);
+//                                        ChatRoom.this.myAdapter.notifyItemInserted(position);
+//                                    })
+//                                    .show();
+//                        })
+//                        .create().show();
+//
+//
+//            });
+
+
+
+
+            });
         }
     }
 }
