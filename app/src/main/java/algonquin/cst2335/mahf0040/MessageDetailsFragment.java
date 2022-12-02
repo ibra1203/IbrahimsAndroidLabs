@@ -2,6 +2,8 @@ package algonquin.cst2335.mahf0040;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +21,7 @@ public class MessageDetailsFragment extends Fragment {
         selected = message;
 
     }
+
 
     @Nullable
     @Override

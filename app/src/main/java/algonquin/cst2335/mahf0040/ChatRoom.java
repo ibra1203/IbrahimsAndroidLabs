@@ -11,9 +11,13 @@ import androidx.room.Room;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,6 +42,70 @@ public class ChatRoom extends AppCompatActivity {
     ChatRoomViewModel chatModel ;
     private RecyclerView.Adapter myAdapter;
     private ChatMessageDAO mDAO;
+    int position;
+    TextView selectedmessage;
+    View itemView;
+    boolean doBackPressed = false;
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch( item.getItemId() )
+        {
+            case R.id.delete:
+
+                ChatMessage thisMessage = messages.get(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
+                builder.setMessage(  thisMessage.message );
+
+                builder.setTitle("Do you want to delete this? ");
+
+                builder.setNegativeButton("No", (dialog, cl)->{   });
+                builder.setPositiveButton("Yes", (dialog, cl)->{
+
+                    Snackbar.make( selectedmessage, "You deleted position #" + position, Snackbar.LENGTH_LONG)
+                            .setAction( "Undo", click-> {
+
+                                Executor thread = Executors.newSingleThreadExecutor();
+                                thread.execute( () -> {
+                                    mDAO.insertMessage(thisMessage);
+                                });
+                                chatModel.messages.getValue().add(thisMessage);
+                                myAdapter.notifyItemInserted( position );
+
+                            } )  .show();
+
+                    Executor thread = Executors.newSingleThreadExecutor();
+                    thread.execute( () -> {
+                        mDAO.deleteMessage(thisMessage);
+                    });
+
+                    myAdapter.notifyItemRemoved( position );
+                    chatModel.messages.getValue().remove(position);
+                    if (doBackPressed){
+                        doBackPressed = false;
+                        this.onBackPressed();
+                    }
+                });
+                builder.create().show();
+                break;
+            case R.id.info:
+                Toast toast = Toast.makeText(getApplicationContext(), "Version 1.0 created by Ibrahim Mahfouz", Toast.LENGTH_LONG);
+                toast.show();
+                break;
+        }
+
+        return true;
+    }
+
+
 
 
     @Override
@@ -46,6 +114,7 @@ public class ChatRoom extends AppCompatActivity {
 
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
 
 
 
@@ -72,7 +141,7 @@ public class ChatRoom extends AppCompatActivity {
             thread.execute(() ->
             {
 
-               // List<ChatMessage> allMessages = mDAO.getAllMessages();
+                // List<ChatMessage> allMessages = mDAO.getAllMessages();
                 messages.addAll( mDAO.getAllMessages() ); //Once you get the data from database
                 binding.recycleView.setAdapter( myAdapter );
             });
@@ -210,10 +279,11 @@ public class ChatRoom extends AppCompatActivity {
         public MyRowHolder(@NonNull View itemView, ArrayList<ChatMessage> messages, ChatMessageDAO mDAO, RecyclerView.Adapter myAdapter) {
             super(itemView);
             messageText = itemView.findViewById(R.id.messageText);
+            selectedmessage = messageText;
             timeText = itemView.findViewById(R.id.timeText);
 
             itemView.setOnClickListener(clk -> {
-
+                doBackPressed = true;
                 int position = getAbsoluteAdapterPosition();
                 ChatMessage selected = messages.get(position);
 
