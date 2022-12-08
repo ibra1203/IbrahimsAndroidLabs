@@ -96,7 +96,7 @@ public class ChatRoom extends AppCompatActivity {
                 });
                 builder.create().show();
                 break;
-            case R.id.info:
+            case R.id.About:
                 Toast toast = Toast.makeText(getApplicationContext(), "Version 1.0 created by Ibrahim Mahfouz", Toast.LENGTH_LONG);
                 toast.show();
                 break;
@@ -290,7 +290,7 @@ public class ChatRoom extends AppCompatActivity {
                 chatModel.selectedMessage.postValue(selected);
 
 
-                //   RecyclerView.ViewHolder newRow = ChatRoom.this.myAdapter.createViewHolder(null, ChatRoom.this.myAdapter.getItemViewType(position));
+                //  RecyclerView.ViewHolder newRow = ChatRoom.this.myAdapter.createViewHolder(null, ChatRoom.this.myAdapter.getItemViewType(position));
 
 //                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
 //
@@ -315,9 +315,6 @@ public class ChatRoom extends AppCompatActivity {
 //
 //
 //            });
-
-
-
 
             });
         }

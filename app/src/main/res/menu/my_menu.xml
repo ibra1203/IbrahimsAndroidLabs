@@ -9,9 +9,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/info"
-        android:icon="@drawable/info"
-        android:title="info"
-        app:showAsAction="always" />
+        android:id="@+id/About"
+        android:icon="@drawable/about"
+        android:title="About"
+        app:showAsAction="never" />
 
 </menu>
