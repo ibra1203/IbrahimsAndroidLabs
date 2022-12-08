@@ -39,6 +39,7 @@ public class MessageDetailsFragment extends Fragment {
 
 
 
+
         binding.messageInfo.setText(selected.message);
         binding.timeInfo.setText(selected.timeSent);
         binding.sendMessageInfo.setText(isSentButton);
